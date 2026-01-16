@@ -2,6 +2,27 @@ import streamlit as st
 import pandas as pd
 from db import get_engine
 
+def login():
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
+
+    if not st.session_state.authenticated:
+        st.title("Acesso restrito")
+
+        password = st.text_input("Senha", type="password")
+
+        if st.button("Entrar"):
+            if password == st.secrets["APP_PASSWORD"]:
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("Senha inválida")
+
+        st.stop()
+
+login()
+
+
 st.set_page_config(page_title="Dashboard Supabase", layout="wide")
 
 engine = get_engine()
