@@ -5,5 +5,5 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_engine():
-    db_url = os.getenv("SUPABASE_DB_URL")
+    db_url = os.getenv("DB_URL")
     return create_engine(db_url, pool_pre_ping=True)
