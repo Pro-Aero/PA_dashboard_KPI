@@ -59,12 +59,6 @@ ON CONFLICT (protocolo)
 DO UPDATE SET quantidade = EXCLUDED.quantidade;
 """)
 
-with engine.begin() as conn:
-    conn.execute(
-        upsert_protocolos,
-        df_protocols.to_dict(orient="records")
-    )
-
 upsert_clients = text("""
 INSERT INTO dashboard_clients (cliente, documents)
 VALUES (:cliente, :documents)
@@ -72,24 +66,12 @@ ON CONFLICT (cliente)
 DO UPDATE SET documents = EXCLUDED.documents;
 """)
 
-with engine.begin() as conn:
-    conn.execute(
-        upsert_clients,
-        df_client.to_dict(orient="records")
-    )
-
 upsert_situation = text("""
 INSERT INTO dashboard_situation (situation, quantity)
 VALUES (:situation, :quantity)
 ON CONFLICT (situation)
 DO UPDATE SET quantity = EXCLUDED.quantity;
 """)
-
-with engine.begin() as conn:
-    conn.execute(
-        upsert_situation,
-        df_situation.to_dict(orient="records")
-    )
 
 upsert_interacts = text("""
 INSERT INTO dashboard_interacts (interacao, quantidade)
@@ -99,6 +81,21 @@ DO UPDATE SET quantidade = EXCLUDED.quantidade;
 """)
 
 with engine.begin() as conn:
+    conn.execute(
+        upsert_protocolos,
+        df_protocols.to_dict(orient="records")
+    )
+
+    conn.execute(
+        upsert_clients,
+        df_client.to_dict(orient="records")
+    )
+
+    conn.execute(
+        upsert_situation,
+        df_situation.to_dict(orient="records")
+    )
+
     conn.execute(
         upsert_interacts,
         interacao.to_dict(orient="records")
