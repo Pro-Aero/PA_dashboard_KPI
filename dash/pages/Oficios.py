@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+st.set_page_config(
+    layout="wide",
+)
+
 @st.cache_data(ttl=300)
 def load_data():
     return pd.read_sql("SELECT * FROM document_control", engine)
