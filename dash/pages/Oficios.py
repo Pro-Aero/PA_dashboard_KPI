@@ -36,4 +36,5 @@ for col, (status, quantidade) in zip (cols, status_count.items()):
         st.metric(
             label=status,
             value=quantidade,
+            border=True
         )
