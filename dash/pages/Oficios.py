@@ -10,8 +10,7 @@ load_dotenv()
 def load_data():
     return pd.read_sql("SELECT * FROM test_table", engine)
 
-engine = create_engine(os.getenv("DB_URL"))
-
+engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
 st.dataframe(df)
