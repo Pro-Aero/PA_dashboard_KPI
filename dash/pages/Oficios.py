@@ -22,7 +22,6 @@ st.dataframe(df)
 st.subheader("Resumo de Documentos")
 
 total = len(df)
-st.metric("Total", total)
 
 st.divider();
 
@@ -38,3 +37,5 @@ for col, (status, quantidade) in zip (cols, status_count.items()):
             value=quantidade,
             border=True
         )
+
+        st.metric("Total", total, border=True)
