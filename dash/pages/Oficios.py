@@ -19,13 +19,12 @@ engine = create_engine(st.secrets["DB_URL"])
 df = load_data()
 st.dataframe(df)
 
+st.divider();
+
 st.subheader("Resumo de Documentos")
 
 total = len(df)
 st.metric("Total", total)
-
-st.divider();
-
 
 status_count = df["SITUAÇÃO"].value_counts()
 
@@ -38,3 +37,6 @@ for col, (status, quantidade) in zip (cols, status_count.items()):
             value=quantidade,
             border=True
         )
+
+st.divider();
+
