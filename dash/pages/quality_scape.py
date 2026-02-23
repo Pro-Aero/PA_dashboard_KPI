@@ -38,3 +38,18 @@ for col, (cliente, quantidade) in zip (cols, cliente_count.items()):
         )
 
 st.divider();
+
+st.subheader("Responsáveis")
+
+response_count = df["Responsável"].value_counts()
+
+cols = st.columns(len(response_count))
+for col, (responsavel, quantidade) in zip (cols, response_count.items()):
+    with col:
+        st.metric(
+            label=responsavel,
+            value=quantidade,
+            border=True
+        )
+
+st.divider();
