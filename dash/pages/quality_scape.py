@@ -17,11 +17,11 @@ def load_data():
 engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
-st.dataframe(df)
+st.dataframe(df, use_container_width=True)
 
 st.divider();
 
-st.subheader("Clientes")
+st.subheader("Total de Incidências")
 
 total = len(df)
 st.metric("Total", total)
@@ -31,23 +31,30 @@ cliente_count = df["Cliente"].value_counts()
 cols = st.columns(len(cliente_count))
 for col, (cliente, quantidade) in zip (cols, cliente_count.items()):
     with col:
+        df_cliente = df[df["Cliente"] == cliente]
+
+        reinc = (df_cliente["Reincidência"] == "Sim").sum()
+
+        perc_reinc = (reinc / quantidade) * 100 if quantidade > 0 else 0
+
         st.metric(
             label=cliente,
             value=quantidade,
-            border=True
+            delta=f"{perc_reinc:.1f}% reinc.",
+            border=True,
         )
 
 st.divider();
 
-st.subheader("Responsáveis")
+st.subheader("Categoria")
 
-response_count = df["Responsável"].value_counts()
+categoria_count = df["Categoria"].value_counts()
 
-cols = st.columns(len(response_count))
-for col, (responsavel, quantidade) in zip (cols, response_count.items()):
+cols = st.columns(len(categoria_count))
+for col, (categoria, quantidade) in zip (cols, categoria_count.items()):
     with col:
         st.metric(
-            label=responsavel,
+            label=categoria,
             value=quantidade,
             border=True
         )
