@@ -17,7 +17,7 @@ def load_data():
 engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
-st.dataframe(df, use_container_width=True)
+st.dataframe(df, width=True)
 
 st.divider();
 
