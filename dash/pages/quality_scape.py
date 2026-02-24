@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import os
 from dotenv import load_dotenv
+import plotly.express as px
 
 load_dotenv()
 
@@ -31,13 +32,13 @@ reinc = df[df["Reincidência"] == "Sim"].shape[0]
 perc_reinc = (reinc / total) * 100
 col2.metric("Reincidência", f"{perc_reinc:.2f}%")
 
-df["Hora de início"] = pd.to_datetime(df["Hora de início"])
-df["Hora de conclusão"] = pd.to_datetime(df["Hora de conclusão"])
-df["tempo_resolucao"] = (
-    df["Hora de conclusão"] - df["Hora de início"]
-).dt.total_seconds() / 3600
-tempo_medio = df["tempo_resolucao"].mean()
-col3.metric("Tempo médio", tempo_medio)
+#df["Hora de início"] = pd.to_datetime(df["Hora de início"])
+#df["Hora de conclusão"] = pd.to_datetime(df["Hora de conclusão"])
+#df["tempo_resolucao"] = (
+#    df["Hora de conclusão"] - df["Hora de início"]
+#).dt.total_seconds() / 3600
+#tempo_medio = df["tempo_resolucao"].mean()
+#ol3.metric("Tempo médio", tempo_medio)
 
 
 cliente_count = df["Cliente"].value_counts()
@@ -69,3 +70,12 @@ for col, (categoria, quantidade) in zip (cols, categoria_count.items()):
         )
 
 st.divider();
+
+fig = px.bar(
+    cliente_count.reset_index(),
+    x="count",
+    y="Cliente",
+    orientation="h"
+)
+
+st.plotly_chart(fig, use_container_width=True)
