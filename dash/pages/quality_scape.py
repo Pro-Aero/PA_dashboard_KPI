@@ -19,6 +19,7 @@ engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
 st.dataframe(df)
+st.write(df.columns)
 
 st.divider();
 
@@ -77,12 +78,20 @@ df_group = (
     .reset_index(name="count")
 )
 
+order = (
+    df.groupby("Cliente")
+    .size()
+    .sort_values()
+    .index
+)
+
 fig = px.bar(
-    cliente_count.reset_index(),
+    df_group,
     x="count",
     y="Cliente",
     color="Categoria",
-    orientation="h"
+    orientation="h",
+    category_orders={"Cliente": order}
 )
 
 st.plotly_chart(fig, use_container_width=True)
