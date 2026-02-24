@@ -32,9 +32,16 @@ reinc = df[df["Reincidência"] == "Sim"].shape[0]
 perc_reinc = (reinc / total) * 100
 col2.metric("Reincidência", f"{perc_reinc:.2f}%")
 
-cliente_count = df["Cliente"].value_counts()
+#df["Hora de início"] = pd.to_datetime(df["Hora de início"])
+#df["Hora de conclusão"] = pd.to_datetime(df["Hora de conclusão"])
+#df["tempo_resolucao"] = (
+#    df["Hora de conclusão"] - df["Hora de início"]
+#).dt.total_seconds() / 3600
+#tempo_medio = df["tempo_resolucao"].mean()
+#ol3.metric("Tempo médio", tempo_medio)
 
-reinc_dict = {}
+
+cliente_count = df["Cliente"].value_counts()
 
 cols = st.columns(len(cliente_count))
 for col, (cliente, quantidade) in zip (cols, cliente_count.items()):
@@ -85,6 +92,11 @@ fig = px.bar(
     orientation="h",
     category_orders={"Cliente": order}
 )
+
+st.subheader("Gráfico de Incidências por Cliente")
+st.plotly_chart(fig, use_container_width=True)
+
+st.divider();
 
 df_reinc = (
     df.groupby("Cliente")["Reincidência"]
