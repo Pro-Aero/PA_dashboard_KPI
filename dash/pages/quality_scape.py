@@ -71,10 +71,17 @@ for col, (categoria, quantidade) in zip (cols, categoria_count.items()):
 
 st.divider();
 
+df_group = (
+    df.groupby(["Cliente", "Categoria"])
+    .size()
+    .reset_index(name="count")
+)
+
 fig = px.bar(
     cliente_count.reset_index(),
     x="count",
     y="Cliente",
+    color="Categoria",
     orientation="h"
 )
 
