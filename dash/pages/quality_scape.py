@@ -17,18 +17,28 @@ def load_data():
 engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
-st.dataframe(df, width=True)
+st.dataframe(df)
 
 st.divider();
 
 st.subheader("Total de Incidências")
+col1, col2, col3 = st.columns(3)
 
 total = len(df)
-st.metric("Total", total)
+col1.metric("Total", total)
 
 reinc = df[df["Reincidência"] == "Sim"].shape[0]
 perc_reinc = (reinc / total) * 100
-st.metric("Reincidência", perc_reinc)
+col2.metric("Reincidência", f"{perc_reinc:.2f}%")
+
+df["Hora início"] = pd.to_datetime(df["Hora início"])
+df["Hora conclusão"] = pd.to_datetime(df["Hora conclusão"])
+df["tempo_resolucao"] = (
+    df["Hora conclusão"] - df["Hora início"]
+).dt.total_seconds() / 3600
+tempo_medio = df["tempo_resolucao"].mean()
+col3.metric("Tempo médio", tempo_medio)
+
 
 cliente_count = df["Cliente"].value_counts()
 
