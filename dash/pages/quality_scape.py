@@ -19,7 +19,6 @@ engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
 st.dataframe(df)
-st.write(df.columns)
 
 st.divider();
 
@@ -33,16 +32,9 @@ reinc = df[df["Reincidência"] == "Sim"].shape[0]
 perc_reinc = (reinc / total) * 100
 col2.metric("Reincidência", f"{perc_reinc:.2f}%")
 
-#df["Hora de início"] = pd.to_datetime(df["Hora de início"])
-#df["Hora de conclusão"] = pd.to_datetime(df["Hora de conclusão"])
-#df["tempo_resolucao"] = (
-#    df["Hora de conclusão"] - df["Hora de início"]
-#).dt.total_seconds() / 3600
-#tempo_medio = df["tempo_resolucao"].mean()
-#ol3.metric("Tempo médio", tempo_medio)
-
-
 cliente_count = df["Cliente"].value_counts()
+
+reinc_dict = {}
 
 cols = st.columns(len(cliente_count))
 for col, (cliente, quantidade) in zip (cols, cliente_count.items()):
@@ -94,4 +86,21 @@ fig = px.bar(
     category_orders={"Cliente": order}
 )
 
+df_reinc = (
+    df.groupby("Cliente")["Reincidência"]
+    .apply(lambda x: (x == "Sim").sum() / len(x) * 100)
+    .reset_index(name="perc_reinc")
+)
+
+st.fig = px.bar(
+    df_reinc,
+    x="perc_reinc",
+    y="Cliente",
+    orientation="h",
+    text="perc_reinc"
+)
+
+fig.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+
+st.subheader("Gráfico de Reincidências por Cliente")
 st.plotly_chart(fig, use_container_width=True)
