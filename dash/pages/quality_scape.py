@@ -34,7 +34,7 @@ col2.metric("Reincidência", f"{perc_reinc:.2f}%")
 df["Hora de início"] = pd.to_datetime(df["Hora início"])
 df["Hora de conclusão"] = pd.to_datetime(df["Hora conclusão"])
 df["tempo_resolucao"] = (
-    df["Hora conclusão"] - df["Hora início"]
+    df["Hora de conclusão"] - df["Hora de início"]
 ).dt.total_seconds() / 3600
 tempo_medio = df["tempo_resolucao"].mean()
 col3.metric("Tempo médio", tempo_medio)
