@@ -26,6 +26,10 @@ st.subheader("Total de Incidências")
 total = len(df)
 st.metric("Total", total)
 
+reinc = df[df["Reincidência"] == "Sim"].shape[0]
+perc_reinc = (reinc / total) * 100
+st.metric("Reincidência", perc_reinc)
+
 cliente_count = df["Cliente"].value_counts()
 
 cols = st.columns(len(cliente_count))
@@ -33,14 +37,9 @@ for col, (cliente, quantidade) in zip (cols, cliente_count.items()):
     with col:
         df_cliente = df[df["Cliente"] == cliente]
 
-        reinc = (df_cliente["Reincidência"] == "Sim").sum()
-
-        perc_reinc = (reinc / quantidade) * 100 if quantidade > 0 else 0
-
         st.metric(
             label=cliente,
             value=quantidade,
-            delta=f"{perc_reinc:.1f}% reinc.",
             border=True,
         )
 
