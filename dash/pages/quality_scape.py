@@ -19,8 +19,6 @@ engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
 
-st.divider();
-
 st.subheader("Total de Incidências")
 col1, col2, col3 = st.columns(3)
 
