@@ -18,7 +18,6 @@ def load_data():
 engine = create_engine(st.secrets["DB_URL"])
 
 df = load_data()
-st.dataframe(df)
 
 st.divider();
 
@@ -119,3 +118,7 @@ fig.update_traces(
 
 st.subheader("Gráfico de Reincidências por Cliente")
 st.plotly_chart(fig, use_container_width=True)
+
+st.divider();
+st.subheader("Tabela geral quality Scape")
+st.dataframe(df)
