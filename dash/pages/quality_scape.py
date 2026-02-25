@@ -104,7 +104,7 @@ df_reinc = (
     .reset_index(name="perc_reinc")
 )
 
-st.fig = px.bar(
+fig = px.bar(
     df_reinc,
     x="perc_reinc",
     y="Cliente",
@@ -112,7 +112,10 @@ st.fig = px.bar(
     text="perc_reinc"
 )
 
-fig.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+fig.update_traces(
+    texttemplate="%{text:.1f}%",
+    textposition="outside"
+)
 
 st.subheader("Gráfico de Reincidências por Cliente")
 st.plotly_chart(fig, use_container_width=True)
